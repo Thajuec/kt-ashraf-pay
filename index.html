@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#166534">
+  <title>Pay K T Ashraf</title>
+  <style>
+    :root { color-scheme: light; }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; min-height: 100vh; display: grid; place-items: center;
+      padding: 20px; font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      background: linear-gradient(145deg, #f0fdf4, #eff6ff); color: #172033;
+    }
+    main {
+      width: min(100%, 430px); background: white; border-radius: 24px;
+      padding: 28px 22px; box-shadow: 0 16px 45px #0f172a18; text-align: center;
+    }
+    .mark { margin: 0 auto 14px; width: 58px; height: 58px; display:grid; place-items:center;
+      border-radius: 18px; background:#dcfce7; color:#166534; font-size:28px; font-weight:800; }
+    h1 { margin: 0 0 6px; font-size: 27px; }
+    .sub { color: #64748b; margin: 0 0 22px; }
+    label { display:block; text-align:left; font-weight:650; margin: 18px 0 8px; }
+    .amount { display:flex; align-items:center; border:1px solid #cbd5e1; border-radius:12px; padding:0 14px; }
+    .rupee { font-size:23px; color:#475569; }
+    input { width:100%; min-width:0; border:0; outline:0; padding:15px 10px; font-size:22px; background:transparent; color:#172033; }
+    button { width:100%; margin-top:18px; border:0; border-radius:13px; padding:15px; background:#15803d;
+      color:white; font-size:17px; font-weight:750; cursor:pointer; }
+    button:active { transform:scale(.99); }
+    .poster { width:100%; height:auto; display:block; border-radius:14px; margin:0 0 22px; }
+    .upi { margin-top:20px; padding:12px; border-radius:12px; background:#f8fafc; overflow-wrap:anywhere; }
+    .upi small { display:block; color:#64748b; margin-bottom:5px; }
+    .upi strong { font-size:15px; }
+    .note { font-size:12px; line-height:1.5; color:#64748b; margin:18px 0 0; }
+    #message { color:#b91c1c; min-height:20px; font-size:13px; margin-top:10px; }
+  </style>
+</head>
+<body>
+  <main>
+    <div class="mark">₹</div>
+    <h1>Pay To K T Ashraf</h1>
+    <p class="sub">Securely continue with your UPI app</p>
+
+    <form id="pay-form">
+      <label for="amount">Enter amount (INR)</label>
+      <div class="amount">
+        <span class="rupee">₹</span>
+        <input id="amount" name="amount" type="number" inputmode="decimal"
+          min="1" max="10000000" step="0.01" placeholder="0.00" required>
+      </div>
+      <button type="submit">Pay Now</button>
+      <div id="message" role="status" aria-live="polite"></div>
+    </form>
+
+    <div class="upi">
+      <small>UPI ID</small>
+      <strong>6235008514@cnrb</strong>
+    </div>
+    <img class="poster" src="poster.jpg" alt="K T Ashraf Ashraf Chikilsa Sahayaya Committee poster">
+    <p class="note">This page does not collect payments or store your amount. Your UPI app will open if supported. Check the payee name and amount in your UPI app before approving payment.</p>
+  </main>
+  <script>
+    const form = document.getElementById('pay-form');
+    const amountInput = document.getElementById('amount');
+    const message = document.getElementById('message');
+
+    form.addEventListener('submit', function (event) {
+      event.preventDefault();
+      const amount = Number(amountInput.value);
+      if (!Number.isFinite(amount) || amount <= 0 || amount > 10000000) {
+        message.textContent = 'Enter a valid amount greater than ₹0.';
+        return;
+      }
+      const params = new URLSearchParams({
+        pa: '6235008514@cnrb',
+        pn: 'K T Ashraf',
+        cu: 'INR',
+        am: amount.toFixed(2),
+        tn: 'UPI Payment'
+      });
+      message.textContent = 'Opening your UPI app… If nothing opens, use the UPI ID shown below in your payment app.';
+      window.location.href = 'upi://pay?' + params.toString();
+    });
+  </script>
+</body>
+</html>
